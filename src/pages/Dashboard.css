@@ -1,0 +1,43 @@
+@import "~antd/dist/antd.css";
+
+#components-layout-demo-custom-trigger .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.anticon svg {
+  /* color: white; */
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+#tag {
+  font-size: 0.65rem;
+  display: flex;
+  margin: 1vh 0.2vw;
+  justify-content: center;
+  align-items: center;
+}
+
+#tag svg {
+  height: 0.6rem;
+  width: 0.6rem;
+}
+
+.tagparent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
