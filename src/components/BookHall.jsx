@@ -292,7 +292,6 @@ const BookHall = () => {
                 height: "2.5rem",
                 width: "9rem",
               }}
-              // disabled
               onClick={postBookForm}
               loading={loading}
             >
