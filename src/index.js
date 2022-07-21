@@ -11,15 +11,37 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log(error.config);
-    console.log(error.response.data);
     const originalrequest = error.config;
-    console.log(error.response.status);
+    if (error.response.status == 403) {
+      Swal.fire({
+        icon: "error",
+        title: "Permission not Granted",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      setTimeout(() => {
+        window.location.href =
+          "https://hall-booking-module-nine.vercel.app/login";
+      }, 2000);
+    }
+    if (error.response.status == 400) {
+      Swal.fire({
+        icon: "error",
+        title: "Bad Request",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+    if (error.response.status == 500) {
+      Swal.fire({
+        icon: "warning",
+        title: "Internal Server Error",
+      });
+    }
     if (
       error.response.status == 401 &&
       error.response.data.detail == "Given token not valid for any token type"
     ) {
-      console.log("ugewwehx");
       return axios({
         method: "POST",
         url: baseURL + "/account/refresh_token/",
@@ -28,20 +50,15 @@ axios.interceptors.response.use(
         },
       })
         .then((response) => {
-          console.log(response.data);
-          console.log("qwertyuiopasdfghjkl");
           const access = response.data.access;
           const refresh = response.data.refresh;
           localStorage.setItem("access", access);
           localStorage.setItem("refresh", refresh);
           originalrequest.headers.Authorization =
             "Bearer " + localStorage.getItem("access");
-          console.log(originalrequest.headers.Authorization);
           return axios(originalrequest);
         })
         .catch((err) => {
-          console.log("hgfdsdfghgfdfghjhgfffffffffffffffffffffff");
-          console.log(err.response.data.detail);
           if (err.response.data.detail == "Token is invalid or expired") {
             axios({
               method: "POST",
@@ -50,15 +67,17 @@ axios.interceptors.response.use(
                 refresh: localStorage.getItem("refresh"),
               },
             }).then(() => {
+              localStorage.removeItem("access");
+              localStorage.removeItem("refresh");
               Swal.fire({
-                // position: "top-end",
                 icon: "warning",
                 title: "Session Timed Out !",
                 showConfirmButton: false,
                 timer: 2000,
               });
               setTimeout(() => {
-                window.location.href = "http://localhost:3000/login";
+                window.location.href =
+                  "https://hall-booking-module-nine.vercel.app/login";
               }, 2000);
             });
             return;

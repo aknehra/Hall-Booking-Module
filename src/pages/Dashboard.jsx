@@ -1,10 +1,9 @@
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate, Link } from "react-router-dom";
 import components from "../components/DynamicComponents";
 import "./Dashboard.css";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Menu, Row, Col, Button } from "antd";
-import { IoLogoBuffer, IoPrint } from "react-icons/io5";
+import { IoLogoBuffer } from "react-icons/io5";
 import React, { useState, useEffect } from "react";
 import { message } from "antd";
 import axios from "axios";
@@ -26,17 +25,21 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url: baseURL + "/account/dashboard/",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access"),
-      },
-    }).then((response) => {
-      setLoading(false);
-      setLeftPanel(response.data);
-      generateLeftPanel(response.data);
-    });
+    if (localStorage.getItem("access")) {
+      axios({
+        method: "GET",
+        url: baseURL + "/account/dashboard/",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access"),
+        },
+      }).then((response) => {
+        setLoading(false);
+        setLeftPanel(response.data);
+        generateLeftPanel(response.data);
+      });
+    } else {
+      nav("/");
+    }
   }, []);
 
   const dynoCompo = (name, props) => {
@@ -76,6 +79,8 @@ const Dashboard = () => {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
     }).then(() => {
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
       const success = () => {
         message.success("Logged Out Successfully");
       };

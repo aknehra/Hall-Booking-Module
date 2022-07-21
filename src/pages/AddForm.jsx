@@ -51,8 +51,7 @@ const AddForm = () => {
           Authorization: "Bearer " + localStorage.getItem("access"),
           "Content-Type": "multipart/form-data",
         },
-      }).then((response) => {
-        console.log(response.data);
+      }).then(() => {
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -190,7 +189,6 @@ const AddForm = () => {
           <Uploadimg setImages={setImages} images={images} />
         </div>
         <div>
-          {" "}
           <Button
             type="primary"
             style={{

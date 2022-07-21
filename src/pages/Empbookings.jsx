@@ -101,29 +101,33 @@ const columns = [
         {status.map((tag) => {
           let color = tag.length > 5 ? "geekblue" : "green";
           let icon;
-
           if (tag.includes("waiting")) {
             color = "orange";
             icon = <ClockCircleOutlined />;
+            return (
+              <Tag color={color} icon={icon} key={tag} id="tag">
+                {tag.toUpperCase()}
+              </Tag>
+            );
           }
           if (tag.includes("rejected")) {
             color = "volcano";
             icon = <MinusCircleOutlined />;
+            return (
+              <Tag color={color} icon={icon} key={tag} id="tag">
+                {tag.toUpperCase()}
+              </Tag>
+            );
           }
           if (tag.includes("approved")) {
             color = "green";
             icon = <CheckCircleOutlined />;
+            return (
+              <Tag color={color} icon={icon} key={tag} id="tag">
+                {tag.toUpperCase()}
+              </Tag>
+            );
           }
-          if (tag.includes("submitted")) {
-            color = "blue";
-            icon = <CheckCircleOutlined />;
-          }
-
-          return (
-            <Tag color={color} icon={icon} key={tag} id="tag">
-              {tag.toUpperCase()}
-            </Tag>
-          );
         })}
       </div>
     ),
@@ -132,10 +136,6 @@ const columns = [
 
 const Empbookings = ({ perm }) => {
   const updateBooking = (record, val) => {
-    console.log(record.id, val);
-    console.log(document.getElementById(`${record.id}_input`).value);
-    console.log(document.getElementById(`${record.id}_select`).value);
-    console.log(val);
     axios({
       method: "PUT",
       url: baseURL + "/hall/book/",
@@ -148,9 +148,9 @@ const Empbookings = ({ perm }) => {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
-    }).then(() => {
+    }).then((response) => {
       message.success("Request Processed Successfully");
-      getList();
+      isOld ? oldBookings() : getList();
     });
   };
 
@@ -167,7 +167,6 @@ const Empbookings = ({ perm }) => {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
     }).then((response) => {
-      console.log(response.data);
       setLoading(false);
       setData(response.data);
     });
@@ -186,7 +185,6 @@ const Empbookings = ({ perm }) => {
         old: 1,
       },
     }).then((response) => {
-      console.log(response.data);
       setLoading(false);
       setData(response.data);
     });
@@ -199,13 +197,14 @@ const Empbookings = ({ perm }) => {
       getList();
     }
   }, []);
+
   return loading ? (
     <Loader />
   ) : (
     <>
       <Row>
         <Col span={20}></Col>
-        <Col span={3} style={{ display: perm.isUpdatable ? "none" : "block" }}>
+        <Col span={3}>
           {!isOld && <Button onClick={oldBookings}>View Old Bookings</Button>}
           {isOld && (
             <Button
@@ -242,18 +241,16 @@ const Empbookings = ({ perm }) => {
                   Authorization: "Bearer " + localStorage.getItem("access"),
                 },
               }).then((response) => {
-                console.log(response.data);
                 let hallList = document.getElementById(`${record.id}_select`);
                 hallList.innerHTML = `<option selected value=${record.id}
                 )>Keep Default ( ${record.hall_name} )</option>`;
                 response.data.map((item) => {
                   hallList.innerHTML += `<option value=${item.id} >${item.name}</option>`;
                 });
-                // console.log(response.data);
               });
             }
           },
-          expandedRowRender: (record, index) => {
+          expandedRowRender: (record) => {
             return (
               <div style={{ margin: 0 }}>
                 <Row>
@@ -325,9 +322,6 @@ const Empbookings = ({ perm }) => {
               </div>
             );
           },
-          // rowExpandable: () => {
-          //   return true;
-          // },
           expandRowByClick: true,
         }}
       />

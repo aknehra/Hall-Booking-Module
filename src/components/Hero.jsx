@@ -3,7 +3,7 @@ import img from "../../src/H(1).jpg";
 import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const nav = useNavigate()
+  const nav = useNavigate();
   return (
     <section className="text-gray-600 body-font">
       <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
@@ -46,7 +46,7 @@ const Hero = () => {
                 strokeWidth="2"
                 className="w-4 h-4 ml-2"
                 viewBox="0 0 24 24"
-                style={{ marginTop: "0.25rem" }}
+                style={{ marginTop: "0.4rem" }}
               >
                 <path d="M5 12h14M12 5l7 7-7 7"></path>
               </svg>

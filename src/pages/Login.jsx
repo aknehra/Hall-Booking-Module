@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,13 @@ import Swal from "sweetalert2";
 import { message } from "antd";
 
 const Login = () => {
+  useEffect(() => {
+    if (!localStorage.getItem("access")) {
+      return;
+    } else {
+      nav("dashboard/*");
+    }
+  }, []);
   const nav = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,14 +36,12 @@ const Login = () => {
       },
     })
       .then((response) => {
-        console.log(response.data);
         localStorage.setItem("access", response.data.access);
         localStorage.setItem("refresh", response.data.refresh);
         const success = () => {
           message.success("Logged in Successfully");
         };
         success();
-
         nav("/dashboard");
       })
       .catch((error) => {

@@ -9,7 +9,6 @@ const Footer = () => {
       >
         <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
             fill="none"
             stroke="currentColor"
             strokeLinecap="round"
@@ -28,7 +27,6 @@ const Footer = () => {
         >
           © 2022 copyrights —
           <a
-            href="https://twitter.com/knyttneve"
             className="text-gray-600 ml-1"
             rel="noopener noreferrer"
             target="_blank"

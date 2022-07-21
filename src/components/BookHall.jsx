@@ -1,6 +1,14 @@
 import React from "react";
-import { Col, Row, Select, Image } from "antd";
-import { Input, Button, DatePicker, Space } from "antd";
+import {
+  Col,
+  Row,
+  Select,
+  Image,
+  Input,
+  Button,
+  DatePicker,
+  Space,
+} from "antd";
 import { useState } from "react";
 import { BsFillCaretRightFill } from "react-icons/bs";
 import axios from "axios";
@@ -8,6 +16,7 @@ import Swal from "sweetalert2";
 import baseURL from "../baseURL";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import Loader from "./Loader";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -18,8 +27,8 @@ const disabledDate = (current) => {
 
 const BookHall = () => {
   const nav = useNavigate();
-
-  const [count, setCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState();
   const [purpose, setPurpose] = useState("");
   const [remark, setRemark] = useState("");
   const [start, setStart] = useState();
@@ -32,27 +41,22 @@ const BookHall = () => {
 
   const { Option } = Select;
 
-  const onChange = (value) => {
-    setCount(value);
-  };
-
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
     setImages([]);
-    for (let index in allHalls[value].images) {
-      var data = `data:image/png;base64,${allHalls[value].images[index]}`;
-      fetch(data)
-        .then((res) => res.blob())
-        .then((blob) => {
-          setImages((images) => [...images, window.URL.createObjectURL(blob)]);
-        });
-    }
+    // for (let index in allHalls[value].images) {
+    //   var data = `data:image/png;base64,${allHalls[value].images[index]}`;
+    //   fetch(data)
+    //     .then((res) => res.blob())
+    //     .then((blob) => {
+    //       setImages((images) => [...images, window.URL.createObjectURL(blob)]);
+    //     });
+    // }
+    setImages(allHalls[value].images);
     setSelectedHall(allHalls[value]);
-    console.log(selectedHall);
   };
 
   const postBookForm = () => {
-    if (count === undefined) {
+    if (count == undefined) {
       Swal.fire({
         icon: "error",
         text: "Input Field is not in correct format !",
@@ -68,23 +72,25 @@ const BookHall = () => {
     ) {
       Swal.fire("Mandatory Fields are Required");
       return;
+    } else {
+      setLoading(true);
+      axios({
+        method: "GET",
+        url: baseURL + "/hall/list/",
+        params: {
+          start: start,
+          end: end,
+          occupancy: count,
+        },
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access"),
+        },
+      }).then((response) => {
+        setLoading(false);
+        setAllHalls(response.data);
+        setDisplay(true);
+      });
     }
-    axios({
-      method: "GET",
-      url: baseURL + "/hall/list/",
-      params: {
-        start: start,
-        end: end,
-        occupancy: count,
-      },
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access"),
-      },
-    }).then((response) => {
-      console.log(response.data);
-      setAllHalls(response.data);
-      setDisplay(true);
-    });
   };
 
   const bookHall = () => {
@@ -103,7 +109,6 @@ const BookHall = () => {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
     }).then((response) => {
-      console.log(response.data);
       document.getElementById("form1").reset();
       document.getElementById("form2").reset();
       setSelectedHall({});
@@ -208,7 +213,6 @@ const BookHall = () => {
           </Col>
           <Col span={2}></Col>
           <Col span={8}>
-            {" "}
             <span
               style={{
                 fontSize: "1.8rem",
@@ -239,7 +243,9 @@ const BookHall = () => {
               min={1}
               max={100000}
               style={{ width: "100%" }}
-              onChange={onChange}
+              onChange={(e) => {
+                setCount(e.target.value);
+              }}
             />
             <Row style={{ marginTop: "0.5rem" }}>
               <Col span={24}>
@@ -286,11 +292,11 @@ const BookHall = () => {
                 height: "2.5rem",
                 width: "9rem",
               }}
+              // disabled
               onClick={postBookForm}
+              loading={loading}
             >
-              <span style={{ fontSize: "1rem", fontFamily: "-moz-initial" }}>
-                Next&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
+              Next&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <svg
                 fill="none"
                 stroke="currentColor"

@@ -12,7 +12,6 @@ const Profile = () => {
         Authorization: "Bearer " + localStorage.getItem("access"),
       },
     }).then((response) => {
-      console.log(response.data);
       setProfile(response.data);
     });
   }, []);
