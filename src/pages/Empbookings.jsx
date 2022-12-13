@@ -196,7 +196,7 @@ const Empbookings = ({ perm }) => {
     } else {
       getList();
     }
-  });
+  }, []);
 
   return loading ? (
     <Loader />

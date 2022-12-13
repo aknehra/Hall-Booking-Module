@@ -33,7 +33,7 @@ const Dashboard = () => {
     } else {
       nav("/");
     }
-  });
+  }, []);
 
   const dynoCompo = (name, props) => {
     const DynamicComponent = components[name];

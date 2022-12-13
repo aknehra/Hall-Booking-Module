@@ -42,14 +42,6 @@ const BookHall = () => {
 
   const handleChange = (value) => {
     setImages([]);
-    // for (let index in allHalls[value].images) {
-    //   var data = `data:image/png;base64,${allHalls[value].images[index]}`;
-    //   fetch(data)
-    //     .then((res) => res.blob())
-    //     .then((blob) => {
-    //       setImages((images) => [...images, window.URL.createObjectURL(blob)]);
-    //     });
-    // }
     setImages(allHalls[value].images);
     setSelectedHall(allHalls[value]);
   };

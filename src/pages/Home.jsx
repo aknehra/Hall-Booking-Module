@@ -13,7 +13,7 @@ const Home = () => {
     } else {
       nav("dashboard/*");
     }
-  });
+  }, []);
   return (
     <div>
       <Header />
