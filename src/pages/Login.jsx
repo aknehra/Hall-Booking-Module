@@ -16,7 +16,7 @@ const Login = () => {
     } else {
       nav("dashboard/*");
     }
-  }, []);
+  });
   const nav = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ const Login = () => {
     e.preventDefault();
 
     if (username.length === 0 || password.length === 0) {
-      Swal.fire("Any fool can use a computer");
+      Swal.fire("Enter the Credentials");
       return;
     } else {
       setLoading(true);

@@ -196,7 +196,7 @@ const Empbookings = ({ perm }) => {
     } else {
       getList();
     }
-  }, []);
+  });
 
   return loading ? (
     <Loader />
@@ -235,6 +235,7 @@ const Empbookings = ({ perm }) => {
                   start: record.start,
                   end: record.end,
                   occupancy: record.occupancy,
+                  hall: record.hall,
                   include_images: "False",
                 },
                 headers: {
@@ -242,10 +243,11 @@ const Empbookings = ({ perm }) => {
                 },
               }).then((response) => {
                 let hallList = document.getElementById(`${record.id}_select`);
-                hallList.innerHTML = `<option selected value=${record.id}
+                hallList.innerHTML = `<option selected value=${record.hall}
                 )>Keep Default ( ${record.hall_name} )</option>`;
+
                 response.data.map((item) => {
-                  hallList.innerHTML += `<option value=${item.id} >${item.name}</option>`;
+                  return hallList.innerHTML += `<option value=${item.id} >${item.name}</option>`;
                 });
               });
             }

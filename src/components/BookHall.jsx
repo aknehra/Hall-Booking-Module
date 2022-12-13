@@ -16,7 +16,6 @@ import Swal from "sweetalert2";
 import baseURL from "../baseURL";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import Loader from "./Loader";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -56,17 +55,17 @@ const BookHall = () => {
   };
 
   const postBookForm = () => {
-    if (count == undefined) {
+    if (count === undefined) {
       Swal.fire({
         icon: "error",
         text: "Input Field is not in correct format !",
       });
     }
     if (
-      start == undefined ||
+      start === undefined ||
       start.length === 0 ||
       end.length === 0 ||
-      end == undefined ||
+      end === undefined ||
       count.length === 0 ||
       purpose.length === 0
     ) {

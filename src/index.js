@@ -12,7 +12,7 @@ axios.interceptors.response.use(
   },
   function (error) {
     const originalrequest = error.config;
-    if (error.response.status == 403) {
+    if (error.response.status === 403) {
       Swal.fire({
         icon: "error",
         title: "Permission not Granted",
@@ -24,7 +24,7 @@ axios.interceptors.response.use(
           "https://hall-booking-module-nine.vercel.app/login";
       }, 2000);
     }
-    if (error.response.status == 400) {
+    if (error.response.status === 400) {
       Swal.fire({
         icon: "error",
         title: "Bad Request",
@@ -32,15 +32,15 @@ axios.interceptors.response.use(
         timer: 1500,
       });
     }
-    if (error.response.status == 500) {
+    if (error.response.status === 500) {
       Swal.fire({
         icon: "warning",
         title: "Internal Server Error",
       });
     }
     if (
-      error.response.status == 401 &&
-      error.response.data.detail == "Given token not valid for any token type"
+      error.response.status === 401 &&
+      error.response.data.detail === "Given token not valid for any token type"
     ) {
       return axios({
         method: "POST",
@@ -59,7 +59,7 @@ axios.interceptors.response.use(
           return axios(originalrequest);
         })
         .catch((err) => {
-          if (err.response.data.detail == "Token is invalid or expired") {
+          if (err.response.data.detail === "Token is invalid or expired") {
             axios({
               method: "POST",
               url: baseURL + "/account/logout/",

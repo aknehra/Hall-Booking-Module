@@ -12,13 +12,6 @@ import Loader from "../components/Loader";
 
 const { Header, Sider, Content } = Layout;
 
-const content = (
-  <div>
-    <p>Content</p>
-    <p>Content</p>
-  </div>
-);
-
 const Dashboard = () => {
   const [leftPanel, setLeftPanel] = useState([]);
   const [items, setItems] = useState([]);
@@ -40,7 +33,7 @@ const Dashboard = () => {
     } else {
       nav("/");
     }
-  }, []);
+  });
 
   const dynoCompo = (name, props) => {
     const DynamicComponent = components[name];
@@ -50,7 +43,7 @@ const Dashboard = () => {
   const generateLeftPanel = (data) => {
     let leftItem = [];
     data.map((item, index) => {
-      leftItem.push({
+      return leftItem.push({
         key: index + 1,
         icon: dynoCompo(item.icon, {}),
         label: (

@@ -27,19 +27,19 @@ const AddForm = () => {
       formData.append("images", file);
     });
 
-    if (occupancy == undefined || limit == undefined) {
+    if (occupancy === undefined || limit === undefined) {
       Swal.fire({
         icon: "error",
         text: "Input fields not in correct format !",
       });
     }
     if (
-      name == undefined ||
-      description == undefined ||
-      name.length == 0 ||
-      description.length == 0 ||
-      occupancy.length == 0 ||
-      limit.length == 0
+      name === undefined ||
+      description === undefined ||
+      name.length === 0 ||
+      description.length === 0 ||
+      occupancy.length === 0 ||
+      limit.length === 0
     ) {
       Swal.fire("Mandatory Fields are Required");
     } else {
